@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>For Mitthi ❤️</title>
-
-  <!-- Romantic fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Pacifico&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
 </head>
 <body>
 
@@ -20,23 +18,16 @@
 <!-- PAGE 1 : QUESTION -->
 <section id="questionPage" class="page">
   <h1 class="big-question">Will you be my Valentine? 💖</h1>
-
   <div class="buttons">
     <button id="yesBtn">YES 💘</button>
     <button id="noBtn">NO 😝</button>
   </div>
-
-  <!-- Panda waiting GIF -->
-  <img class="gif"
-    src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
-    alt="panda waiting">
+  <img class="gif" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="panda waiting">
 </section>
 
 <!-- TRANSITION 1 -->
 <section id="transition1" class="page transition-page">
-  <img class="transition-gif"
-    src="https://media.giphy.com/media/l4FGpPki5v2Bcd6Ss/giphy.gif"
-    alt="cute transition">
+  <img class="transition-gif" src="https://media.giphy.com/media/l4FGpPki5v2Bcd6Ss/giphy.gif" alt="cute transition">
   <p class="transition-text">Getting things ready for you...</p>
 </section>
 
@@ -44,16 +35,13 @@
 <section id="game1Page" class="page">
   <h2 class="game-title">Collect 10 Hearts 💖</h2>
   <p class="subtitle">Click each heart to reveal a message</p>
-
   <div id="gameArea"></div>
   <div id="compliment"></div>
 </section>
 
 <!-- TRANSITION 2 -->
 <section id="transition2" class="page transition-page">
-  <img class="transition-gif"
-    src="https://media.giphy.com/media/l0Hek8mXSBY772iMo/giphy.gif"
-    alt="typing transition">
+  <img class="transition-gif" src="https://media.giphy.com/media/l0Hek8mXSBY772iMo/giphy.gif" alt="typing transition">
   <p class="transition-text">Preparing your next surprise...</p>
 </section>
 
@@ -61,7 +49,6 @@
 <section id="mazePage" class="page">
   <h2 class="game-title">Bring Mitthi to Krishna 🏰</h2>
   <p class="instructions">Use arrow keys to navigate the maze</p>
-  
   <div class="maze-container">
     <canvas id="mazeCanvas"></canvas>
     <div class="mobile-controls">
@@ -74,15 +61,11 @@
   <div id="mazeMessage"></div>
 </section>
 
-<!-- PAGE 4-9 : DAYS 1-6 + SONG -->
+<!-- PAGE 4 : DAYS 1-6 -->
 <section id="daysPage" class="page">
   <div class="days-container">
     <h2 class="days-title">7 Days of Valentine 💕</h2>
-    
-    <div id="dayContent">
-      <!-- Day content will be loaded here dynamically -->
-    </div>
-    
+    <div id="dayContent"></div>
     <div class="days-navigation">
       <button id="prevDayBtn">← Previous</button>
       <span id="dayCounter">Day 1 of 7</span>
@@ -91,54 +74,45 @@
   </div>
 </section>
 
-<!-- SONG PAGE (embedded in Days flow) -->
+<!-- PAGE 5 : SONG PAGE -->
 <section id="songPage" class="page">
   <div class="song-container">
     <h2 class="song-title">Our Song 💿</h2>
-    
     <div class="record-player">
       <div class="record" id="record">
         <div class="record-center"></div>
       </div>
       <div class="needle"></div>
     </div>
-    
     <p class="song-instruction">Click the record to play our song</p>
-    
     <div class="dance-animation">
       <div class="couple-dance"></div>
       <div class="rain-effect"></div>
     </div>
-    
     <button id="playSongBtn">Play "Perfect" by Ed Sheeran</button>
     <audio id="valentineSong" preload="metadata">
-      <source src="https://assets.codepen.io/16425/perfect.mp3" type="audio/mpeg">
+      <source src="perfect.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
-    
     <button id="continueFromSongBtn" class="continue-btn">Continue to Next →</button>
   </div>
 </section>
 
 <!-- TRANSITION 3 -->
 <section id="transition3" class="page transition-page">
-  <img class="transition-gif"
-    src="https://media.giphy.com/media/1JmGiBtqTuehfYxuy9/giphy.gif"
-    alt="cat hugging heart">
+  <img class="transition-gif" src="https://media.giphy.com/media/1JmGiBtqTuehfYxuy9/giphy.gif" alt="cat hugging heart">
   <p class="transition-text">More love coming your way...</p>
 </section>
 
-<!-- PAGE 10 : GAME 3 (Riddles) -->
+<!-- PAGE 6 : GAME 3 (Riddles) -->
 <section id="riddlePage" class="page">
   <h2 class="game-title">Decode My Heart 🔐</h2>
   <p class="subtitle">Solve 7 romantic riddles</p>
-  
   <div class="riddle-container">
     <div id="riddleDisplay"></div>
     <input type="text" id="answerInput" placeholder="Type your answer...">
     <button id="submitAnswerBtn">Submit Answer</button>
   </div>
-  
   <div class="riddle-progress">
     <div class="progress-bar">
       <div class="progress-fill"></div>
@@ -149,59 +123,47 @@
 
 <!-- TRANSITION 4 -->
 <section id="transition4" class="page transition-page">
-  <img class="transition-gif"
-    src="https://media.giphy.com/media/l0Hek8mXSBY772iMo/giphy.gif"
-    alt="typing transition">
+  <img class="transition-gif" src="https://media.giphy.com/media/l0Hek8mXSBY772iMo/giphy.gif" alt="typing transition">
   <p class="transition-text">Almost there...</p>
 </section>
 
-<!-- PAGE 11 : GAME 4 (Matching) -->
+<!-- PAGE 7 : GAME 4 (Matching) -->
 <section id="matchPage" class="page">
   <h2 class="game-title">Match Our Story 💞</h2>
   <p class="subtitle">Find the matching pairs</p>
-  
-  <div id="matchGrid">
-    <!-- Cards will be generated dynamically -->
-  </div>
-  
+  <div id="matchGrid"></div>
   <div id="matchScore">Matches: 0/5</div>
 </section>
 
 <!-- TRANSITION 5 -->
 <section id="transition5" class="page transition-page">
-  <img class="transition-gif"
-    src="https://media.giphy.com/media/1JmGiBtqTuehfYxuy9/giphy.gif"
-    alt="cat hugging heart">
+  <img class="transition-gif" src="https://media.giphy.com/media/1JmGiBtqTuehfYxuy9/giphy.gif" alt="cat hugging heart">
   <p class="transition-text">One final surprise...</p>
 </section>
 
-<!-- PAGE 12 : DAY 7 -->
+<!-- PAGE 8 : DAY 7 -->
 <section id="day7Page" class="page">
   <div class="final-day">
     <h2 class="day7-title">Day 7: Forever Begins 🌟</h2>
-    
     <div class="day7-photo">
       <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
            alt="Romantic sunset" class="blur-photo" id="day7Photo">
       <p class="reveal-instruction">Click to reveal</p>
     </div>
-    
     <div class="day7-message">
       <p class="love-quote">"My heart beats only for you, today and always. Forever begins with you, Mitthi 💞"</p>
     </div>
-    
     <button id="toFinalBtn">To The Final Page →</button>
   </div>
 </section>
 
-<!-- PAGE 13 : FINAL -->
+<!-- PAGE 9 : FINAL -->
 <section id="finalPage" class="page">
   <h1 class="final-text">
     Tu sirf meri hai, Mitthi ❤️<br><br>
     Happy Valentine's Day 💕<br><br>
     <span class="signature">- Forever Yours</span>
   </h1>
-  
   <div class="heart-rain"></div>
 </section>
 
