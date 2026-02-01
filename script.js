@@ -1,7 +1,5 @@
-/* ===== CORRECTED PAGE NAVIGATION ===== */
+/* ===== PAGE NAVIGATION SYSTEM ===== */
 function showPage(pageId) {
-  console.log("Showing page:", pageId); // For debugging
-  
   // Hide all pages
   const allPages = document.querySelectorAll('.page');
   allPages.forEach(page => {
@@ -12,94 +10,45 @@ function showPage(pageId) {
   const targetPage = document.getElementById(pageId);
   if (targetPage) {
     targetPage.classList.add('active');
+    // Scroll to top
+    window.scrollTo(0, 0);
   } else {
     console.error("Page not found:", pageId);
   }
   
-  // Scroll to top
-  window.scrollTo(0, 0);
-  
   // Handle page-specific setups
   if (pageId === 'game1Page') {
-    startGame1();
+    setTimeout(startGame1, 100);
   } else if (pageId === 'mazePage') {
     setTimeout(initMazeGame, 100);
   } else if (pageId === 'daysPage') {
-    showDay(1);
+    setTimeout(() => showDay(1), 100);
   } else if (pageId === 'riddlePage') {
-    initRiddleGame();
+    setTimeout(initRiddleGame, 100);
   } else if (pageId === 'matchPage') {
-    initMatchingGame();
+    setTimeout(initMatchingGame, 100);
   } else if (pageId === 'finalPage') {
-    createHeartRain();
+    setTimeout(createHeartRain, 100);
   }
 }
 
-/* ===== INITIALIZE WITH START PAGE ===== */
-document.addEventListener('DOMContentLoaded', function() {
-  // Make sure only start page is visible initially
-  showPage('startPage');
-});
-/* ===== PAGE REFERENCES ===== */
-const pages = {
-  start: document.getElementById("startPage"),
-  question: document.getElementById("questionPage"),
-  transition1: document.getElementById("transition1"),
-  game1: document.getElementById("game1Page"),
-  transition2: document.getElementById("transition2"),
-  maze: document.getElementById("mazePage"),
-  days: document.getElementById("daysPage"),
-  song: document.getElementById("songPage"),
-  transition3: document.getElementById("transition3"),
-  riddle: document.getElementById("riddlePage"),
-  transition4: document.getElementById("transition4"),
-  match: document.getElementById("matchPage"),
-  transition5: document.getElementById("transition5"),
-  day7: document.getElementById("day7Page"),
-  final: document.getElementById("finalPage")
-};
-
-/* ===== NAVIGATION FUNCTION ===== */
-function showPage(pageId) {
-  // Hide all pages
-  Object.values(pages).forEach(page => {
-    page.classList.remove("active");
-  });
-  
-  // Show requested page
-  pages[pageId].classList.add("active");
-  
-  // Handle page-specific setups
-  if (pageId === 'game1') {
-    startGame1();
-  } else if (pageId === 'maze') {
-    setTimeout(initMazeGame, 100);
-  } else if (pageId === 'days') {
-    showDay(1);
-  } else if (pageId === 'riddle') {
-    initRiddleGame();
-  } else if (pageId === 'match') {
-    initMatchingGame();
-  }
-}
-
-/* ===== BUTTON EVENT LISTENERS ===== */
+/* ===== START PAGE ===== */
 document.getElementById("startBtn").onclick = () => {
-  showPage("question");
+  showPage("questionPage");
 };
 
+/* ===== QUESTION PAGE ===== */
 document.getElementById("yesBtn").onclick = () => {
   showPage("transition1");
   setTimeout(() => {
-    showPage("game1");
+    showPage("game1Page");
   }, 4500);
 };
 
-// Floating NO button
 document.getElementById("noBtn").onmouseover = () => {
   const noBtn = document.getElementById("noBtn");
-  noBtn.style.left = Math.random() * 80 + "vw";
-  noBtn.style.top = Math.random() * 60 + "vh";
+  noBtn.style.left = Math.random() * 70 + "vw";
+  noBtn.style.top = Math.random() * 50 + "vh";
 };
 
 /* ===== GAME 1: 10 HEARTS ===== */
@@ -117,66 +66,67 @@ const compliments = [
 ];
 
 let heartIndex = 0;
-let gameArea, complimentBox;
 
 function startGame1() {
-  gameArea = document.getElementById("gameArea");
-  complimentBox = document.getElementById("compliment");
+  const gameArea = document.getElementById("gameArea");
+  const complimentBox = document.getElementById("compliment");
   heartIndex = 0;
   gameArea.innerHTML = "";
+  complimentBox.style.opacity = "0";
+  
+  function spawnHeart() {
+    if (heartIndex >= compliments.length) {
+      setTimeout(() => {
+        showPage("transition2");
+        setTimeout(() => {
+          showPage("mazePage");
+        }, 4000);
+      }, 1500);
+      return;
+    }
+
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 85 + "vw";
+    heart.style.top = Math.random() * 70 + "vh";
+    
+    heart.addEventListener('click', function handleClick() {
+      complimentBox.textContent = compliments[heartIndex];
+      complimentBox.style.opacity = "1";
+      
+      heart.style.animation = 'none';
+      heart.style.transform = 'scale(2)';
+      heart.style.opacity = '0';
+      
+      setTimeout(() => {
+        complimentBox.style.opacity = "0";
+        heart.remove();
+        heartIndex++;
+        spawnHeart();
+      }, 1000);
+      
+      heart.removeEventListener('click', handleClick);
+    });
+    
+    gameArea.appendChild(heart);
+  }
+  
   spawnHeart();
 }
 
-function spawnHeart() {
-  if (heartIndex >= compliments.length) {
-    setTimeout(() => {
-      showPage("transition2");
-      setTimeout(() => {
-        showPage("maze");
-      }, 4000);
-    }, 1500);
-    return;
-  }
-
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerText = "❤️";
-  heart.style.left = Math.random() * 80 + "vw";
-  heart.style.top = Math.random() * 50 + "vh";
-  gameArea.appendChild(heart);
-
-  heart.onclick = () => {
-    showCompliment(compliments[heartIndex]);
-    heart.remove();
-    heartIndex++;
-    setTimeout(spawnHeart, 1200);
-  };
-}
-
-function showCompliment(text) {
-  complimentBox.innerText = text;
-  complimentBox.style.opacity = "1";
-  setTimeout(() => {
-    complimentBox.style.opacity = "0";
-  }, 1000);
-}
-
 /* ===== GAME 2: MAZE ===== */
-let mazeCanvas, mazeCtx;
-let player = { x: 1, y: 1 }; // Start position
-let end = { x: 13, y: 11 }; // End position
+let mazeCtx, player = { x: 1, y: 1 }, end = { x: 13, y: 11 };
 const cellSize = 30;
 let mazeWalls = [];
 
 function initMazeGame() {
-  mazeCanvas = document.getElementById("mazeCanvas");
-  mazeCtx = mazeCanvas.getContext("2d");
-  
-  // Set canvas size
+  const mazeCanvas = document.getElementById("mazeCanvas");
   mazeCanvas.width = 500;
   mazeCanvas.height = 400;
+  mazeCtx = mazeCanvas.getContext("2d");
   
-  // Define maze walls (1 = wall, 0 = path)
+  // Maze layout
   mazeWalls = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
@@ -195,24 +145,29 @@ function initMazeGame() {
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
   ];
   
-  // Add mobile control listeners
+  player = { x: 1, y: 1 };
+  
+  // Mobile controls
   document.querySelectorAll('.arrow-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const dir = btn.dataset.direction;
-      movePlayer(dir);
-    });
+    btn.addEventListener('click', () => movePlayer(btn.dataset.direction));
   });
   
-  // Add keyboard controls
-  document.addEventListener('keydown', handleKeyPress);
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    if ([37, 38, 39, 40].includes(e.keyCode)) {
+      e.preventDefault();
+      const dir = {37:'left',38:'up',39:'right',40:'down'}[e.keyCode];
+      movePlayer(dir);
+    }
+  });
   
   drawMaze();
 }
 
 function drawMaze() {
-  mazeCtx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
+  mazeCtx.clearRect(0, 0, 500, 400);
   
-  // Draw walls and paths
+  // Draw walls
   for (let y = 0; y < mazeWalls.length; y++) {
     for (let x = 0; x < mazeWalls[y].length; x++) {
       if (mazeWalls[y][x] === 1) {
@@ -227,13 +182,7 @@ function drawMaze() {
   // Draw end point (Krishna)
   mazeCtx.fillStyle = '#4cc9f0';
   mazeCtx.beginPath();
-  mazeCtx.arc(
-    end.x * cellSize + cellSize/2,
-    end.y * cellSize + cellSize/2,
-    cellSize/2 - 2,
-    0,
-    Math.PI * 2
-  );
+  mazeCtx.arc(end.x * cellSize + cellSize/2, end.y * cellSize + cellSize/2, cellSize/2 - 2, 0, Math.PI * 2);
   mazeCtx.fill();
   mazeCtx.fillStyle = 'white';
   mazeCtx.font = '16px Pacifico';
@@ -244,50 +193,24 @@ function drawMaze() {
   // Draw player (Mitthi)
   mazeCtx.fillStyle = '#ff4d6d';
   mazeCtx.beginPath();
-  mazeCtx.arc(
-    player.x * cellSize + cellSize/2,
-    player.y * cellSize + cellSize/2,
-    cellSize/2 - 2,
-    0,
-    Math.PI * 2
-  );
+  mazeCtx.arc(player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2, cellSize/2 - 2, 0, Math.PI * 2);
   mazeCtx.fill();
   mazeCtx.fillStyle = 'white';
-  mazeCtx.font = '16px Pacifico';
   mazeCtx.fillText('M', player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2);
 }
 
-function handleKeyPress(e) {
-  if ([37, 38, 39, 40].includes(e.keyCode)) {
-    e.preventDefault();
-    const dir = {
-      37: 'left',
-      38: 'up',
-      39: 'right',
-      40: 'down'
-    }[e.keyCode];
-    movePlayer(dir);
-  }
-}
-
 function movePlayer(direction) {
-  let newX = player.x;
-  let newY = player.y;
+  let newX = player.x, newY = player.y;
+  if (direction === 'up') newY--;
+  else if (direction === 'down') newY++;
+  else if (direction === 'left') newX--;
+  else if (direction === 'right') newX++;
   
-  switch(direction) {
-    case 'up': newY--; break;
-    case 'down': newY++; break;
-    case 'left': newX--; break;
-    case 'right': newX++; break;
-  }
-  
-  // Check if move is valid (not a wall)
   if (mazeWalls[newY] && mazeWalls[newY][newX] === 0) {
     player.x = newX;
     player.y = newY;
     drawMaze();
     
-    // Check if reached end
     if (player.x === end.x && player.y === end.y) {
       winMazeGame();
     }
@@ -295,62 +218,41 @@ function movePlayer(direction) {
 }
 
 function winMazeGame() {
-  document.removeEventListener('keydown', handleKeyPress);
-  document.getElementById("mazeMessage").innerText = "No matter the maze, I'll always find you ❤️";
+  document.getElementById("mazeMessage").textContent = "No matter the maze, I'll always find you ❤️";
+  document.removeEventListener('keydown', () => {});
   
-  // Screen shake effect
-  mazeCanvas.style.animation = 'shake 0.5s';
-  setTimeout(() => {
-    mazeCanvas.style.animation = '';
-  }, 500);
+  // Shake effect
+  const canvas = document.getElementById("mazeCanvas");
+  canvas.style.animation = 'shake 0.5s';
   
-  setTimeout(() => {
-    showPage("days");
-  }, 3000);
-}
-
-// Add shake animation
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  // Add shake animation
+  if (!document.querySelector('#shake-style')) {
+    const style = document.createElement('style');
+    style.id = 'shake-style';
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
   }
-`;
-document.head.appendChild(style);
+  
+  setTimeout(() => {
+    canvas.style.animation = '';
+    showPage("daysPage");
+  }, 2000);
+}
 
 /* ===== DAYS 1-6 ===== */
 const daysContent = [
-  {
-    day: 1,
-    message: "Day 1: Every moment with you feels like magic ✨",
-    photo: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    day: 2,
-    message: "Day 2: You make ordinary days extraordinary 💖",
-    photo: "https://images.unsplash.com/photo-1516487200032-8532cb603261?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    day: 3,
-    message: "Day 3: Laughs, hugs, and love — my favorite trio 😊",
-    photo: "https://images.unsplash.com/photo-1544717305-99670f9c28f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    day: 4,
-    message: "Day 4: You are my calm in a chaotic world 🏡",
-    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    day: 5,
-    message: "Day 5: Life is sweeter with you 🍫💕",
-    photo: "https://images.unsplash.com/photo-1529254479751-fbacb4c7a587?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    day: 6,
-    message: "Day 6: My heart beats only for you ❤️"
-  }
+  { day: 1, message: "Day 1: Every moment with you feels like magic ✨", photo: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" },
+  { day: 2, message: "Day 2: You make ordinary days extraordinary 💖", photo: "https://images.unsplash.com/photo-1516487200032-8532cb603261?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" },
+  { day: 3, message: "Day 3: Laughs, hugs, and love — my favorite trio 😊", photo: "https://images.unsplash.com/photo-1544717305-99670f9c28f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" },
+  { day: 4, message: "Day 4: You are my calm in a chaotic world 🏡", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" },
+  { day: 5, message: "Day 5: Life is sweeter with you 🍫💕", photo: "https://images.unsplash.com/photo-1529254479751-fbacb4c7a587?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" },
+  { day: 6, message: "Day 6: My heart beats only for you ❤️", photo: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" }
 ];
 
 let currentDay = 1;
@@ -382,35 +284,22 @@ function showDay(dayNum) {
     `;
     
     dayCounter.textContent = `Day ${dayNum} of 7`;
-    
-    // Show/hide navigation buttons
-    document.getElementById("prevDayBtn").style.display = dayNum === 1 ? "none" : "block";
-    
-    if (dayNum === 6) {
-      document.getElementById("nextDayBtn").textContent = "Our Song →";
-    } else {
-      document.getElementById("nextDayBtn").textContent = "Next →";
-    }
-  } else if (dayNum === 7) {
-    showPage("song");
+    document.getElementById("prevDayBtn").style.display = dayNum === 1 ? "none" : "inline-block";
+    document.getElementById("nextDayBtn").textContent = dayNum === 6 ? "Our Song →" : "Next →";
   }
 }
 
-function revealPhoto(imgElement) {
+window.revealPhoto = function(imgElement) {
   imgElement.classList.add("revealed");
-  imgElement.parentElement.querySelector(".reveal-instruction").style.display = "none";
-}
+};
 
-// Day navigation
 document.getElementById("prevDayBtn").onclick = () => {
-  if (currentDay > 1) {
-    showDay(currentDay - 1);
-  }
+  if (currentDay > 1) showDay(currentDay - 1);
 };
 
 document.getElementById("nextDayBtn").onclick = () => {
   if (currentDay === 6) {
-    showPage("song");
+    showPage("songPage");
   } else if (currentDay < 6) {
     showDay(currentDay + 1);
   }
@@ -424,10 +313,14 @@ document.getElementById("playSongBtn").onclick = function() {
   const btn = this;
   
   if (song.paused) {
-    song.play();
-    record.classList.add("spinning");
-    needle.classList.add("playing");
-    btn.textContent = "Pause Song";
+    song.play().then(() => {
+      record.classList.add("spinning");
+      needle.classList.add("playing");
+      btn.textContent = "Pause Song";
+    }).catch(e => {
+      console.log("Autoplay prevented:", e);
+      btn.textContent = "Click to Play";
+    });
   } else {
     song.pause();
     record.classList.remove("spinning");
@@ -437,119 +330,75 @@ document.getElementById("playSongBtn").onclick = function() {
 };
 
 document.getElementById("continueFromSongBtn").onclick = () => {
+  const song = document.getElementById("valentineSong");
+  song.pause();
+  song.currentTime = 0;
+  document.getElementById("record").classList.remove("spinning");
+  document.querySelector(".needle").classList.remove("playing");
+  document.getElementById("playSongBtn").textContent = "Play 'Perfect' by Ed Sheeran";
+  
   showPage("transition3");
-  setTimeout(() => {
-    showPage("riddle");
-  }, 4000);
+  setTimeout(() => showPage("riddlePage"), 4000);
 };
 
 /* ===== GAME 3: RIDDLES ===== */
 const riddles = [
-  {
-    question: "I start with a 'H', beat fast for you, what am I?",
-    answer: "heart"
-  },
-  {
-    question: "I am invisible but felt, I grow when you smile, what am I?",
-    answer: "love"
-  },
-  {
-    question: "I'm the place your name always lives in me. What am I?",
-    answer: "mind"
-  },
-  {
-    question: "I travel from you to me in letters and notes. What am I?",
-    answer: "message"
-  },
-  {
-    question: "I sparkle when you laugh, shine when you smile. What am I?",
-    answer: "joy"
-  },
-  {
-    question: "I am the tie that binds two souls together. What am I?",
-    answer: "bond"
-  },
-  {
-    question: "I am what I feel for you every day. What am I?",
-    answer: "love"
-  }
+  { question: "I start with a 'H', beat fast for you, what am I?", answer: "heart" },
+  { question: "I am invisible but felt, I grow when you smile, what am I?", answer: "love" },
+  { question: "I'm the place your name always lives in me. What am I?", answer: "mind" },
+  { question: "I travel from you to me in letters and notes. What am I?", answer: "message" },
+  { question: "I sparkle when you laugh, shine when you smile. What am I?", answer: "joy" },
+  { question: "I am the tie that binds two souls together. What am I?", answer: "bond" },
+  { question: "I am what I feel for you every day. What am I?", answer: "love" }
 ];
 
 let currentRiddle = 0;
-let riddleScore = 0;
 
 function initRiddleGame() {
   currentRiddle = 0;
-  riddleScore = 0;
+  document.querySelector(".progress-fill").style.width = "0%";
   loadRiddle();
   
   document.getElementById("submitAnswerBtn").onclick = checkAnswer;
-  document.getElementById("answerInput").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-      checkAnswer();
-    }
+  document.getElementById("answerInput").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") checkAnswer();
   });
 }
 
 function loadRiddle() {
   document.getElementById("riddleDisplay").textContent = riddles[currentRiddle].question;
   document.getElementById("answerInput").value = "";
+  document.getElementById("riddleCounter").textContent = `Riddle ${currentRiddle + 1}/${riddles.length}`;
   document.getElementById("answerInput").focus();
-  updateRiddleProgress();
 }
 
 function checkAnswer() {
-  const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
-  const correctAnswer = riddles[currentRiddle].answer.toLowerCase();
+  const answer = document.getElementById("answerInput").value.trim().toLowerCase();
+  const correct = riddles[currentRiddle].answer.toLowerCase();
   
-  if (userAnswer === correctAnswer) {
-    riddleScore++;
-    
-    // Show success effect
-    const riddleDisplay = document.getElementById("riddleDisplay");
-    riddleDisplay.style.color = "#ff006e";
-    riddleDisplay.style.transform = "scale(1.05)";
-    setTimeout(() => {
-      riddleDisplay.style.color = "#5a3d5c";
-      riddleDisplay.style.transform = "scale(1)";
-    }, 500);
-    
+  if (answer === correct) {
     currentRiddle++;
+    const progress = (currentRiddle / riddles.length) * 100;
+    document.querySelector(".progress-fill").style.width = `${progress}%`;
     
-    if (currentRiddle < riddles.length) {
-      setTimeout(loadRiddle, 800);
-    } else {
-      // All riddles completed
+    if (currentRiddle >= riddles.length) {
       setTimeout(() => {
         showPage("transition4");
-        setTimeout(() => {
-          showPage("match");
-        }, 4000);
-      }, 1500);
+        setTimeout(() => showPage("matchPage"), 4000);
+      }, 800);
+    } else {
+      setTimeout(loadRiddle, 800);
     }
   } else {
-    // Show error effect
     document.getElementById("answerInput").style.borderColor = "#ff0000";
     setTimeout(() => {
       document.getElementById("answerInput").style.borderColor = "#ff85a1";
     }, 500);
   }
-  
-  updateRiddleProgress();
-}
-
-function updateRiddleProgress() {
-  const progress = ((currentRiddle + 1) / riddles.length) * 100;
-  document.querySelector(".progress-fill").style.width = `${progress}%`;
-  document.getElementById("riddleCounter").textContent = `Riddle ${currentRiddle + 1}/${riddles.length}`;
 }
 
 /* ===== GAME 4: MATCHING ===== */
-let matchCards = [];
-let firstCard = null;
-let secondCard = null;
-let lockBoard = false;
-let matchesFound = 0;
+let firstCard = null, secondCard = null, lockBoard = false, matches = 0;
 
 const cardPairs = [
   { id: 1, content: "❤️", matchId: 1 },
@@ -567,34 +416,32 @@ const cardPairs = [
 function initMatchingGame() {
   const matchGrid = document.getElementById("matchGrid");
   matchGrid.innerHTML = "";
-  matchesFound = 0;
+  matches = 0;
   firstCard = null;
   secondCard = null;
   lockBoard = false;
+  document.getElementById("matchScore").textContent = "Matches: 0/5";
   
-  // Shuffle cards
-  const shuffledCards = [...cardPairs].sort(() => Math.random() - 0.5);
+  const shuffled = [...cardPairs].sort(() => Math.random() - 0.5);
   
-  // Create card elements
-  shuffledCards.forEach((card, index) => {
-    const cardElement = document.createElement("div");
-    cardElement.className = "match-card";
-    cardElement.dataset.id = card.id;
-    cardElement.dataset.matchId = card.matchId;
-    cardElement.innerHTML = `<div class="card-back">?</div><div class="card-front">${card.content}</div>`;
-    cardElement.onclick = () => flipCard(cardElement);
-    matchGrid.appendChild(cardElement);
+  shuffled.forEach(card => {
+    const cardEl = document.createElement("div");
+    cardEl.className = "match-card";
+    cardEl.dataset.id = card.id;
+    cardEl.dataset.matchId = card.matchId;
+    cardEl.innerHTML = `
+      <div class="card-back">?</div>
+      <div class="card-front">${card.content}</div>
+    `;
+    cardEl.addEventListener('click', () => flipCard(cardEl));
+    matchGrid.appendChild(cardEl);
   });
-  
-  updateMatchScore();
 }
 
 function flipCard(card) {
-  if (lockBoard || card.classList.contains("flipped") || card.classList.contains("matched")) {
-    return;
-  }
+  if (lockBoard || card === firstCard || card.classList.contains('matched')) return;
   
-  card.classList.add("flipped");
+  card.classList.add('flipped');
   
   if (!firstCard) {
     firstCard = card;
@@ -604,40 +451,30 @@ function flipCard(card) {
   secondCard = card;
   lockBoard = true;
   
-  checkForMatch();
-}
-
-function checkForMatch() {
   const isMatch = firstCard.dataset.matchId === secondCard.dataset.matchId;
-  
-  if (isMatch) {
-    disableCards();
-    matchesFound++;
-    updateMatchScore();
-    
-    if (matchesFound === 5) {
-      setTimeout(() => {
-        showPage("transition5");
-        setTimeout(() => {
-          showPage("day7");
-        }, 4000);
-      }, 1000);
-    }
-  } else {
-    unflipCards();
-  }
+  isMatch ? disableCards() : unflipCards();
 }
 
 function disableCards() {
-  firstCard.classList.add("matched");
-  secondCard.classList.add("matched");
+  firstCard.classList.add('matched');
+  secondCard.classList.add('matched');
+  matches++;
+  document.getElementById("matchScore").textContent = `Matches: ${matches}/5`;
+  
+  if (matches === 5) {
+    setTimeout(() => {
+      showPage("transition5");
+      setTimeout(() => showPage("day7Page"), 4000);
+    }, 1000);
+  }
+  
   resetBoard();
 }
 
 function unflipCards() {
   setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
+    firstCard.classList.remove('flipped');
+    secondCard.classList.remove('flipped');
     resetBoard();
   }, 1000);
 }
@@ -646,22 +483,17 @@ function resetBoard() {
   [firstCard, secondCard, lockBoard] = [null, null, false];
 }
 
-function updateMatchScore() {
-  document.getElementById("matchScore").textContent = `Matches: ${matchesFound}/5`;
-}
-
 /* ===== DAY 7 ===== */
-document.getElementById("day7Photo").onclick = function() {
+document.getElementById("day7Photo").addEventListener('click', function() {
   this.classList.add("revealed");
-  document.querySelector(".reveal-instruction").style.display = "none";
-};
+  this.nextElementSibling.style.display = "none";
+});
 
 document.getElementById("toFinalBtn").onclick = () => {
-  showPage("final");
-  createHeartRain();
+  showPage("finalPage");
 };
 
-/* ===== FINAL PAGE HEART RAIN ===== */
+/* ===== FINAL PAGE ===== */
 function createHeartRain() {
   const heartRain = document.querySelector(".heart-rain");
   heartRain.innerHTML = "";
@@ -672,7 +504,7 @@ function createHeartRain() {
     heart.style.position = "absolute";
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.top = "-50px";
-    heart.style.fontSize = Math.random() * 30 + 20 + "px";
+    heart.style.fontSize = (Math.random() * 30 + 20) + "px";
     heart.style.color = "#ff4d6d";
     heart.style.opacity = "0.7";
     heart.style.animation = `fall ${Math.random() * 3 + 2}s linear ${Math.random() * 2}s infinite`;
@@ -680,15 +512,22 @@ function createHeartRain() {
     heartRain.appendChild(heart);
   }
   
-  // Add fall animation
-  const fallStyle = document.createElement("style");
-  fallStyle.textContent = `
-    @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
+  if (!document.querySelector('#fall-style')) {
+    const style = document.createElement('style');
+    style.id = 'fall-style';
+    style.textContent = `
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
       }
-    }
-  `;
-  document.head.appendChild(fallStyle);
+    `;
+    document.head.appendChild(style);
+  }
 }
+
+/* ===== INITIALIZE ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('startPage');
+});
