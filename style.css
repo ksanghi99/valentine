@@ -1,10 +1,121 @@
-/* ===== TRANSITION PAGE STYLES ===== */
+/* ===== CRITICAL: PAGE CONTROL ===== */
+.page {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  padding-top: 5vh;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ===== GLOBAL STYLES ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(#ffe6eb, #fff);
+  font-family: 'Playfair Display', serif;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ===== START PAGE ===== */
+#startPage {
+  text-align: center;
+  padding-top: 30vh;
+}
+
+.start-text {
+  font-family: 'Pacifico', cursive;
+  font-size: 48px;
+  color: #d6336c;
+  margin-bottom: 40px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#startBtn {
+  font-size: 22px;
+  padding: 14px 40px;
+  border-radius: 30px;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  cursor: pointer;
+  font-family: 'Pacifico', cursive;
+}
+
+/* ===== QUESTION PAGE ===== */
+#questionPage {
+  text-align: center;
+  padding-top: 20vh;
+}
+
+.big-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  color: #c9184a;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  margin-bottom: 30px;
+  position: relative;
+  min-height: 100px;
+}
+
+button {
+  font-size: 22px;
+  padding: 12px 30px;
+  margin: 10px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Pacifico', cursive;
+}
+
+#yesBtn {
+  background-color: #ff4d6d;
+  color: white;
+}
+
+#noBtn {
+  background-color: #adb5bd;
+  position: absolute;
+}
+
+.gif {
+  width: 280px;
+  margin-top: 30px;
+}
+
+/* ===== TRANSITION PAGES ===== */
 .transition-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #ffe6eb 0%, #ffd6e0 100%);
+  text-align: center;
+}
+
+.transition-gif {
+  width: 350px;
 }
 
 .transition-text {
@@ -15,7 +126,70 @@
   animation: pulse 2s infinite;
 }
 
-/* ===== MAZE GAME STYLES ===== */
+/* ===== GAME 1 PAGE ===== */
+#game1Page {
+  text-align: center;
+  padding-top: 10vh;
+}
+
+.game-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  color: #d6336c;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-family: 'Pacifico', cursive;
+  font-size: 20px;
+  color: #ff4d6d;
+  margin-bottom: 30px;
+}
+
+#gameArea {
+  position: relative;
+  width: 100vw;
+  height: 50vh;
+}
+
+.heart {
+  position: absolute;
+  font-size: 48px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.heart:hover {
+  transform: scale(1.2);
+}
+
+#compliment {
+  position: fixed;
+  bottom: 20%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Pacifico', cursive;
+  font-size: 28px;
+  color: #ff006e;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+/* ===== MAZE PAGE ===== */
+#mazePage {
+  text-align: center;
+  padding-top: 5vh;
+}
+
+.instructions {
+  font-family: 'Pacifico', cursive;
+  font-size: 20px;
+  color: #c9184a;
+  margin-bottom: 20px;
+}
+
 .maze-container {
   position: relative;
   margin: 20px auto;
@@ -46,13 +220,6 @@
   cursor: pointer;
 }
 
-.instructions {
-  font-family: 'Pacifico', cursive;
-  font-size: 20px;
-  color: #c9184a;
-  margin-bottom: 20px;
-}
-
 #mazeMessage {
   font-family: 'Pacifico', cursive;
   font-size: 28px;
@@ -61,11 +228,15 @@
   min-height: 40px;
 }
 
-/* ===== DAYS PAGE STYLES ===== */
+/* ===== DAYS PAGE ===== */
+#daysPage {
+  text-align: center;
+  padding: 5vh 20px;
+}
+
 .days-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .days-title {
@@ -158,10 +329,15 @@
   color: #c9184a;
 }
 
-/* ===== SONG PAGE STYLES ===== */
-.song-container {
+/* ===== SONG PAGE ===== */
+#songPage {
   text-align: center;
-  padding: 40px 20px;
+  padding: 5vh 20px;
+}
+
+.song-container {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .song-title {
@@ -243,7 +419,7 @@
 .couple-dance {
   width: 100%;
   height: 100%;
-  background: #ff85a1;
+  background: linear-gradient(45deg, #ff85a1, #ffccd5);
   border-radius: 10px;
   position: relative;
   animation: danceMove 3s ease-in-out infinite;
@@ -287,7 +463,12 @@
   display: none;
 }
 
-/* ===== RIDDLE PAGE STYLES ===== */
+/* ===== RIDDLE PAGE ===== */
+#riddlePage {
+  text-align: center;
+  padding: 5vh 20px;
+}
+
 .riddle-container {
   max-width: 600px;
   margin: 30px auto;
@@ -303,6 +484,7 @@
   color: #5a3d5c;
   margin-bottom: 30px;
   min-height: 100px;
+  padding: 20px;
 }
 
 #answerInput {
@@ -352,7 +534,12 @@
   color: #d6336c;
 }
 
-/* ===== MATCHING GAME STYLES ===== */
+/* ===== MATCHING PAGE ===== */
+#matchPage {
+  text-align: center;
+  padding: 5vh 20px;
+}
+
 #matchGrid {
   display: grid;
   grid-template-columns: repeat(4, 150px);
@@ -379,15 +566,42 @@
   position: relative;
 }
 
-.match-card.flipped {
-  transform: rotateY(180deg);
+.match-card .card-back,
+.match-card .card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  border-radius: 15px;
+}
+
+.match-card .card-back {
+  background: linear-gradient(45deg, #ff85a1, #ffccd5);
+  color: white;
+  font-size: 36px;
+}
+
+.match-card .card-front {
   background: white;
   color: #ff4d6d;
+  transform: rotateY(180deg);
+}
+
+.match-card.flipped {
+  transform: rotateY(180deg);
 }
 
 .match-card.matched {
   background: linear-gradient(45deg, #ff006e, #ff4d6d);
   cursor: default;
+}
+
+.match-card.matched .card-front {
+  background: linear-gradient(45deg, #ff006e, #ff4d6d);
+  color: white;
 }
 
 #matchScore {
@@ -397,12 +611,15 @@
   margin-top: 20px;
 }
 
-/* ===== DAY 7 PAGE STYLES ===== */
+/* ===== DAY 7 PAGE ===== */
+#day7Page {
+  text-align: center;
+  padding: 5vh 20px;
+}
+
 .final-day {
   max-width: 600px;
   margin: 0 auto;
-  padding: 40px 20px;
-  text-align: center;
 }
 
 .day7-title {
@@ -447,15 +664,22 @@
   box-shadow: 0 8px 20px rgba(255, 0, 110, 0.3);
 }
 
-/* ===== FINAL PAGE ENHANCEMENTS ===== */
-.heart-rain {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
+/* ===== FINAL PAGE ===== */
+#finalPage {
+  text-align: center;
+  padding-top: 25vh;
+  background: linear-gradient(135deg, #ffe6eb 0%, #ffd6e0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.final-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  color: #9d0208;
+  line-height: 1.6;
+  z-index: 2;
+  position: relative;
 }
 
 .signature {
@@ -466,8 +690,27 @@
   display: block;
 }
 
+.heart-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .start-text {
+    font-size: 36px;
+  }
+  
+  .big-question {
+    font-size: 36px;
+    padding: 0 20px;
+  }
+  
   .maze-container {
     width: 90vw;
     height: 60vh;
@@ -491,5 +734,14 @@
   
   .mobile-controls {
     display: block;
+  }
+  
+  .transition-gif {
+    width: 280px;
+  }
+  
+  .photo-container {
+    width: 250px;
+    height: 250px;
   }
 }
